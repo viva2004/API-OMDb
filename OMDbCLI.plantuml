@@ -1,0 +1,34 @@
+@startuml Argsflix bucket list
+class App{
+    favoritter: List
+    bucket_list: bucket_list
+    hentet_data: multimedium
+    kjør()
+    sorter_resultater()
+    vis_skall()
+}
+
+class bucket_list{
+    info: List[(tittel,rating)]
+
+    lag_bucketlist(): På oppstart
+    legg_til_bucketlist()
+    fjerne_fra_bucketlist()
+    sorter_tittel()
+    sorter_rating()
+}
+
+class multimedium{
+    tittel: str
+    utgivelsesår: int
+    ratings: List
+    skuespillere: List
+    sjanger: List
+    plot: str
+    id: int
+
+    hent_data_ID()
+    hent_data_tittel()
+}
+
+@enduml

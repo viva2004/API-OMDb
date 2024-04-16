@@ -1,4 +1,8 @@
 class Multimedium:
+    """
+    En klasse som lagrer på informasjonen som mottas fra OMDb. 
+    Denne klassen er også foreldreklasse for film og serie
+    """
     def __init__(self,tittel:str, utgivelsesår: int, ratings: list, skuespillere: str, sjanger: str, plot: str, id: int) -> None:
         self._tittel = tittel
         self._utgivelsesår = utgivelsesår
@@ -35,4 +39,3 @@ class Multimedium:
     @property
     def id(self):
         return self._id
-    

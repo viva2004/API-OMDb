@@ -8,13 +8,12 @@ class App{
 }
 
 class Bucket_list{
-    # info: List[Multimedium]
+    # Favoritter: List[Multimedium]
+    # Sett: List[str]
 
     # lag_bucketlist(): @classmethod
     # legg_til_bucketlist()
     # fjerne_fra_bucketlist()
-    # sorter_tittel()
-    # sorter_rating()
 }
 
 class Søke_resultat{

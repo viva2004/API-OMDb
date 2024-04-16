@@ -1,6 +1,7 @@
 from components.multimedium import Multimedium
 
 class Serie(Multimedium):
+    """En klasse som representerer en film utifra OMDb informasjon"""
     def __init__(self, tittel: str, utgivelsesår: int, ratings: list, skuespillere: list, sjanger: list, plot: str, id: int, antall_sesonger: int) -> None:
         super().__init__(tittel, utgivelsesår, ratings, skuespillere, sjanger, plot, id)
         self._antall_sesonger = antall_sesonger

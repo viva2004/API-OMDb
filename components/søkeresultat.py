@@ -1,5 +1,6 @@
 from components.film import Film
 from components.serie import Serie
+from components.fnutt import Fnutt
 import requests as req
 
 class Søkeresultat:
@@ -19,8 +20,8 @@ class Søkeresultat:
     
     @staticmethod
     def lag_url(delvis_url: str, key: str, søkeord: str, søkemetode = str) -> str:
-        if søkemetode == "t":
-            return delvis_url + f"?apikey={key}" + f"&t={søkeord}"
+        if søkemetode == "s":
+            return delvis_url + f"?apikey={key}" + f"&s={søkeord}"
         
         elif søkemetode == "id":
             return delvis_url + f"?apikey={key}" + f"&i={søkeord}"
@@ -44,15 +45,32 @@ class Søkeresultat:
         print("Søket ditt fikk ingen resultater")
         return None
     
+    
+    
     def hent_film(self, søkeord, søkemetode):    
         self.url = self.lag_url(self._delvis_url, self.key, søkeord, søkemetode)
         data = self._hent_data(self.url)
-        if data["Type"] == "movie":
-            fetched_data = Film(data["Title"],data["Released"],data["Ratings"],data["Actors"],data["Genre"],data["Plot"],data["imdbID"],data["Runtime"])
-        elif data["Type"] == "series":
-            fetched_data = Serie(data["Title"],data["Released"],data["Ratings"],data["Actors"],data["Genre"],data["Plot"],data["imdbID"],data["totalSeasons"])      
+        if søkeord == "id":
+            if data["Type"] == "movie":
+                fetched_data = Film(data["Title"],data["Released"],data["Ratings"],data["Actors"],data["Genre"],data["Plot"],data["imdbID"],data["Runtime"])
+                self._hentet_data.append(fetched_data)
+            elif data["Type"] == "series":
+                fetched_data = Serie(data["Title"],data["Released"],data["Ratings"],data["Actors"],data["Genre"],data["Plot"],data["imdbID"],data["totalSeasons"])      
+                self._hentet_data.append(fetched_data)
+            else:
+                print(f"Unrecognized mediatype: {data['Type']}")
+                return None
         else:
-            print(f"Unrecognized mediatype: {data['Type']}")
-            return None
+            for element in data['Search']:
+                print(element)
+                if element["Type"] == "movie":
+                    fetched_data = Fnutt(element["Title"],"movie",element['Year'],element["imdbID"])
+                    self._hentet_data.append(fetched_data)
+                elif element["Type"] == "series":
+                    fetched_data = Fnutt(element["Title"],"series",element['Year'], element["imdbID"])
+                    self._hentet_data.append(fetched_data)
+                else:
+                    print(f"Unrecognized mediatype: {data['Type']}")
+                
         
-        self._hentet_data.append(fetched_data)
+        

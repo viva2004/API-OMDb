@@ -24,9 +24,13 @@ class Bucketlist:
 
     def __str__(self):
         self._oppdater_liste()
-        beskrivelse = f"Dette er din liste med favoritt filmer!"
+        beskrivelse = f"Dette er din liste med favoritt medieelementer!"
         for i,favoritt in enumerate(self._favoritter_underholdning):
-            beskrivelse += f"\nFilm {i+1}!!!"+str(favoritt)
+            beskrivelse += f"\nElement {i+1}!!!"+str(favoritt)
+        
+        beskrivelse += "\nDisse har du allerede sett:\n" 
+        for i,favoritt in enumerate(self._navn_favoritter["sett"]):
+            beskrivelse += f"{favoritt} "
         return beskrivelse
     
     def _oppdater_liste(self):
@@ -57,10 +61,28 @@ class Bucketlist:
     def from_JSON(cls, url:str, key:str, filplassering:str):
         with open(filplassering, "r", encoding="utf-8") as fil:
             data = json.load(fil)
+            if len(data) == 0:
+                data = {"info":[], "sett":[]}
         return cls(data, url, key,filplassering)
     
     def legg_til_favoritt(self, favoritt:str, mediatype:Film|Serie):
         self._navn_favoritter["info"].append([favoritt,mediatype])
+
+    def fjern_film(self,hva:str,element:int):
+        fjernet_element = self._navn_favoritter[hva].pop(element)
+        self._oppdater_liste()
+        return fjernet_element
+
+    
+    def marker_sett(self, id:str):
+        resultat = req.get(self.url + f"?apikey={self.key}" + f"&i={id}")
+        data = resultat.json()
+        if data["Response"]:
+            self._navn_favoritter["sett"].append(data["Title"])
+            print(f"La til filmen {data['Title']}")
+        else:
+            print("Det fins ingen filmer med den IMDb ID-en")
+        self._oppdater_liste()
     
     def lagre_data(self):
         self._navn_favoritter["info"] = self.fjern_duplikater(self._navn_favoritter["info"])

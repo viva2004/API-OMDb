@@ -4,7 +4,7 @@ from components.søkeresultat import Søkeresultat
 from components.bucket_list import Bucketlist
 def testcases_søkeresultat():
     mine_søk = Søkeresultat(data.settings.API_URL, data.settings.API_KEY)
-    mine_søk.hent_film("Star Wars", "t")
+    mine_søk.hent_film("Star Wars", "s")
     assert (
         mine_søk._hentet_data[0].id == "tt0076759"
     ), f"Det er noe galt med søkefunksjonen. ID den hentet er {mine_søk._hentet_data[0].id} når det skulle vært tt0076759"
